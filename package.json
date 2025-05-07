@@ -1,0 +1,28 @@
+{
+  "name": "mentorship_platform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankit010IITJ/Mentorship_Platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankit010IITJ/Mentorship_Platform/issues"
+  },
+  "homepage": "https://github.com/ankit010IITJ/Mentorship_Platform#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "mysql2": "^3.14.1",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Setup</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <form action="/profile/setup" method="POST">
+        <h1>Set Up Your Profile</h1>
+
+        <label>Role:</label>
+        <select name="role" required>
+            <option value="">Select role</option>
+            <option value="mentor">Mentor</option>
+            <option value="mentee">Mentee</option>
+        </select><br>
+
+        <label>Skills:</label>
+        <input type="text" name="skills" required><br>
+
+        <label>Interests:</label>
+        <input type="text" name="interests" required><br>
+
+        <label>Bio:</label>
+        <textarea name="bio" rows="4" cols="40" required></textarea><br>
+
+        <button type="submit">Save Profile</button>
+    </form>
+</body>
+</html>
