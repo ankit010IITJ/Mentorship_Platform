@@ -1,0 +1,159 @@
+<style>
+    /* Footer */
+    footer {
+        background: var(--dark);
+        color: white;
+        padding: 4rem 5% 2rem;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .footer-column h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: var(--accent);
+    }
+    
+    .footer-column ul {
+        list-style: none;
+    }
+    
+    .footer-column ul li {
+        margin-bottom: 0.8rem;
+    }
+    
+    .footer-column ul li a {
+        color: #bbb;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .footer-column ul li a:hover {
+        color: white;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .social-links a {
+        color: white;
+        background: rgba(255,255,255,0.1);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s;
+    }
+    
+    .social-links a:hover {
+        background: var(--accent);
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        color: #bbb;
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+        .hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 3rem 5%;
+        }
+        
+        .hero-content {
+            padding-right: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .search-bar {
+            margin: 0 auto 2rem;
+        }
+        
+        .stats {
+            justify-content: center;
+        }
+        
+        .steps {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>MentorConnect</h3>
+            <p>Connecting passionate learners with experienced mentors across various fields and industries.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">Testimonials</a></li>
+                <li><a href="#">Pricing</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="fas fa-envelope"></i> hello@mentorconnect.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                <li><i class="fas fa-map-marker-alt"></i> 123 Mentor St, San Francisco, CA</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 MentorConnect. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+</footer>

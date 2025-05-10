@@ -10,19 +10,38 @@ router.get('/register', (req, res) => {
 
 // POST: Register New User
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { firstname, lastname, email, password, role, bio, skills = [], interests = [] } = req.body;
     try {
         const [existing] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-        if (existing.length > 0) {
-            return res.send('Email already registered');
+        if (existing.length > 0) return res.send('Email already registered');
+
+        const username = email.split('@')[0];
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert user
+        const [userResult] = await db.execute(
+            'INSERT INTO users (username, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)',
+            [username, email, hashedPassword, firstname, lastname]
+        );
+        const userId = userResult.insertId;
+
+        // Insert profile
+        await db.execute(
+            'INSERT INTO profiles (user_id, role, bio) VALUES (?, ?, ?)',
+            [userId, role, bio]
+        );
+
+        // Insert skills
+        const skillValues = Array.isArray(skills) ? skills : [skills]; // Ensure array
+        for (let skillId of skillValues) {
+            await db.execute('INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)', [userId, skillId]);
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await db.execute('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', [
-            username,
-            email,
-            hashedPassword,
-        ]);
+        // Insert interests
+        const interestValues = Array.isArray(interests) ? interests : [interests];
+        for (let interestId of interestValues) {
+            await db.execute('INSERT INTO user_interests (user_id, interest_id) VALUES (?, ?)', [userId, interestId]);
+        }
 
         res.redirect('/auth/login');
     } catch (err) {
@@ -30,6 +49,7 @@ router.post('/register', async (req, res) => {
         res.status(500).send('Error registering user');
     }
 });
+
 
 // GET: Login Page
 router.get('/login', (req, res) => {
@@ -48,7 +68,7 @@ router.post('/login', async (req, res) => {
         if (!match) return res.send('Invalid email or password');
 
         req.session.userId = user.id;
-        res.redirect('/profile/setup');
+        res.render('profile_view');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error logging in');
@@ -56,10 +76,10 @@ router.post('/login', async (req, res) => {
 });
 
 // GET: Logout
-router.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/auth/login');
-    });
-});
+// router.get('/logout', (req, res) => {
+//     req.session.destroy(() => {
+//         res.redirect('/auth/login');
+//     });
+// });
 
 module.exports = router;

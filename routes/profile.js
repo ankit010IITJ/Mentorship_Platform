@@ -1,6 +1,68 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+// const {isAuthenticated} = require("../middleware.js")
+
+// GET: View Profile
+router.get('/', async (req, res) => {
+    if (!req.session.userId) return res.redirect('/auth/login');
+
+    try {
+        // Fetch profile + user's name in one query
+        const [[profile]] = await db.execute(`
+            SELECT p.*, u.first_name, u.last_name
+            FROM profiles p
+            JOIN users u ON p.user_id = u.id
+            WHERE p.user_id = ?
+        `, [req.session.userId]);
+
+        if (!profile) return res.redirect('/profile/setup');
+
+        // Get skills
+        const [skills] = await db.execute(`
+            SELECT s.name FROM skills s
+            JOIN user_skills us ON s.id = us.skill_id
+            WHERE us.user_id = ?
+        `, [req.session.userId]);
+
+        // Get interests
+        const [interests] = await db.execute(`
+            SELECT i.name FROM interests i
+            JOIN user_interests ui ON i.id = ui.interest_id
+            WHERE ui.user_id = ?
+        `, [req.session.userId]);
+
+        res.render('profile', {
+            profile,
+            fullName: `${profile.first_name} ${profile.last_name}`,
+            skills: skills.map(s => s.name),
+            interests: interests.map(i => i.name)
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error loading profile');
+    }
+});
+
+
+// GET: Delete Profile
+router.get('/delete', async (req, res) => {
+    if (!req.session.userId) return res.redirect('/auth/login');
+
+    try {
+        // Delete everything
+        await db.execute('DELETE FROM user_skills WHERE user_id = ?', [req.session.userId]);
+        await db.execute('DELETE FROM user_interests WHERE user_id = ?', [req.session.userId]);
+        await db.execute('DELETE FROM profiles WHERE user_id = ?', [req.session.userId]);
+        await db.execute('DELETE FROM users WHERE id = ?', [req.session.userId]);
+
+        res.send('Profile deleted successfully. <a href="/profile/setup">Create again</a>');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting profile');
+    }
+});
+
 
 // GET: Profile Setup Form
 router.get('/setup', async (req, res) => {
